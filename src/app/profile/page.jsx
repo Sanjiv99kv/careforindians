@@ -1,24 +1,11 @@
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import data from "../../../public/assets/data.js";
-import { useState , useEffect } from "react";
-import { listCareProfile } from "../services/auth";
-import { useParams } from 'next/navigation';
 const { carecardData } = data;
 
 export default function Profile() {
   const data = carecardData[2];
-const [cardData , setCardData] = useState(null)
-const userId = useParams.user;
-  const handleList = async()=>{
-    const result = await listCareProfile(userId);
-    setCardData(result)
-  }
-  console.log(cardData , 22222)
-  useEffect(()=>{
-    handleList()
-    console.log(cardData , 22222)
-  },[cardData])
+
   return (
     <>
       <Navbar />
@@ -29,20 +16,20 @@ const userId = useParams.user;
             <div className="md:w-[55%]">
               <div className="h-40 w-40 rounded-full overflow-hidden">
                 <img
-                  src={cardData.profilePic}
-                  alt="profile"
+                  src="/Images/carecard1.jpeg"
+                  alt=""
                   className="h-full w-full object-cover"
                 />
               </div>
               {/** profile card */}
               <div className="flex flex-col gap-2 mt-5">
                 <h1 className="text-[17px] text-[#101828] font-[600]">
-                  {cardData.username}
+                  Shasta Weishampel
                 </h1>
                 <div className="flex items-center gap-[5px]">
                   <img src="/Icons/location.svg" alt="" className="h-[20px]" />
                   <span className="text-[15px] font-[400]">
-                    {cardData.location}
+                    6391 Elgin St. Celina
                   </span>
                 </div>
                 <div className="flex gap-2 items-center">
@@ -85,24 +72,22 @@ const userId = useParams.user;
               Highlights from the Shasta
             </h1>
             <div className="flex gap-[13px]">
-              
+              {data.treatments.map((treatment, index) => {
+                return (
                   <button
                     key={index}
                     className={`text-[13px] mt-[8px] text-[#101828] px-[13px] py-[5px] rounded-md font-[500] ${
-                      cardData.category === "tutoring"
-                      ? "bg-[#E9ECFF]"
-                      : cardData.category === "childcare"
-                      ? "bg-[#E7F2FF]"
-                       : cardData.category === "mentalphysical"
-                      ? "bg-[#E7F2FF]"
-                       : cardData.category === "mealservice"
-                      ? "bg-[#E9ECFF]]"
-                      : "bg-[#EFFFDF]"
+                      treatment === "Tutoring"
+                        ? "bg-[#E9ECFF]"
+                        : treatment === "Child Care"
+                        ? "bg-[#E7F2FF]"
+                        : "bg-[#EFFFDF]"
                     }`}
                   >
-                    {cardData.category}
+                    {treatment}
                   </button>
-                
+                );
+              })}
             </div>
           </div>
 
@@ -139,7 +124,14 @@ const userId = useParams.user;
               About
             </h1>
             <div className="text-[#475467] text-[13px]">
-              {cardData.about}
+              Sukoon Health treats acute psychiatric needs, addiction, mental
+              health conditions, personality disorders, and more across all
+              ages. They use personalized and intensive care to provide a
+              comprehensive treatment experience in a residential, outpatient,
+              or at-home setting. Their experienced staff includes
+              psychiatrists, psychologists, medical doctors, counsellors, art
+              therapists, and a 1:1 nurse-to-client ratio. Sukoon Health has
+              special treatment tracks for women, older adults, and adolescents.
             </div>
           </div>
 
@@ -153,7 +145,15 @@ const userId = useParams.user;
               Experience
             </div>
             <div className="text-[#475467] text-[13px] mt-4">
-              {cardData.skills}
+              Sukoon Health provides behavioral, mental health, and learning
+              disability treatment for adolescents. They offer a women-only
+              treatment program with only women on staff. Sukoon Health also
+              provides geriatric psychiatric care for older adults. They provide
+              adjunct therapies for all ages, including rTMS (repeated
+              transcranial magnetic stimulation), art therapy with on-staff art
+              therapists, yoga, and exercise with an on-site fitness studio.
+              Sukoon Health additionally helps international clients with their
+              visa process and airport transfers.
             </div>
             <img src="/Icons/trusted.svg" alt="" className="h-16 mt-4" />
           </div>

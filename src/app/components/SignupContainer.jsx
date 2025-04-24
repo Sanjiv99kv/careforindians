@@ -6,11 +6,8 @@ import { AppContext } from "../context/AppContext.js";
 import InputField from "../components/InputField";
 import { validateForm } from "../utils/validation";
 import { signupUser, verifyOtp } from "../services/auth.js";
-import { useCareForm } from './../context/CareFormContext';
-import { signIn } from "next-auth/react";
 
 export default function SignupContainer() {
-  const { updateForm } = useCareForm();
   const { BASE_URL } = useContext(AppContext);
   const router = useRouter();
 
@@ -37,16 +34,13 @@ export default function SignupContainer() {
       try {
         const data = await signupUser(BASE_URL, {
           email: formData.email,
-          fullName: formData.firstName + ` ` + formData.lastName,
+          firstName: formData.firstName,
+          lastName: formData.lastName,
           password: formData.password,
         });
 
         if (data.message === "Otp has been sent successfully") {
           setShowOtp(true);
-          console.log(data , 99999);
-          updateForm({
-            user_id: data.newUser._id,
-          })
         } else {
           setErrors((prev) => ({
             ...prev,
@@ -62,19 +56,6 @@ export default function SignupContainer() {
     }
   };
 
-
-  const handleGoogleLogin = async () => {
-    await signIn("google", {
-      callbackUrl: "/",
-    });
-  };
-
-  const handleFacebookLogin = async () => {
-    await signIn("facebook", {
-      callbackUrl: "/",
-    });
-  };
-
   const handleOtpVerify = async (e) => {
     e.preventDefault();
     try {
@@ -84,7 +65,7 @@ export default function SignupContainer() {
       });
 
       if (data.success) {
-        router.push("/create");
+        router.push("/login");
       } else {
         setErrors((prev) => ({ ...prev, otp: data.message || "Invalid OTP" }));
       }
@@ -182,11 +163,11 @@ export default function SignupContainer() {
             <span className="text-[16px]">or</span>
             <div className="w-[48%] h-[1px] bg-[#0000001A]"></div>
           </div>
-          <button className="w-full rounded-md text-[14px] mt-3 py-[8px] cursor-pointer border border-[#0000001A] flex justify-center gap-5 hover:bg-[#F1F5F9]" onClick = {handleGoogleLogin}>
+          <button className="w-full rounded-md text-[14px] mt-3 py-[8px] cursor-pointer border border-[#0000001A] flex justify-center gap-5 hover:bg-[#F1F5F9]">
             <FcGoogle className="text-[20px]" />
             Signup with Google
           </button>
-          <button className="w-full rounded-md text-[14px] mt-3 py-[8px] cursor-pointer border border-[#0000001A] flex justify-center gap-5 hover:bg-[#F1F5F9]" onClick={handleFacebookLogin}>
+          <button className="w-full rounded-md text-[14px] mt-3 py-[8px] cursor-pointer border border-[#0000001A] flex justify-center gap-5 hover:bg-[#F1F5F9]">
             <img src="/Icons/facebook.svg" alt="" className="h-5" />
             Login with Facebook
           </button>

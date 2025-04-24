@@ -1,106 +1,42 @@
 "use client";
-import { useState , useContext } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { AppContext } from "./../../../../context/AppContext";
 import Navbar from "../../../../components/Navbar";
-import { useCareForm } from '../../../../context/CareFormContext';
-import {createCare} from "./../../../../services/auth";
 
 export default function PersonalData() {
-  const { BASE_URL } = useContext(AppContext);
-  const { updateForm , formData } = useCareForm();
-  const [profilePic, setprofilePic] = useState(null);
+  const [profilePicture, setProfilePicture] = useState(null);
   const [username, setUsername] = useState("");
   const [gender, setGender] = useState("");
-  const [dateOfBirth, setdateOfBirth] = useState("");
-  const [about, setabout] = useState("");
-  const [skills, setskills] = useState("");
+  const [dob, setDob] = useState("");
+  const [aboutYourself, setAboutYourself] = useState("");
+  const [aboutSkills, setAboutSkills] = useState("");
   const router = useRouter();
 
-  // const handlePictureUpload = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       console.log(reader , 444444)
-  //       setprofilePic(reader.result.slice(0, 12));
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // };
-
-  // const handleNextClick = () => {
-  //   if (
-  //     username &&
-  //     gender &&
-  //     dateOfBirth &&
-  //     about &&
-  //     skills &&
-  //     profilePic
-  //   ) {
-  //     router.push("/"); // Redirect to the home page
-  //   } else {
-  //     alert("Please fill all the fields and upload a profile picture.");
-  //   }
-  // };
-
-  const handlePictureUpload = async (e) => {
+  const handlePictureUpload = (e) => {
     const file = e.target.files[0];
-    if (!file) return;
-  
-    const formData = new FormData();
-    formData.append("file", file);
-  
-    try {
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-  
-      const data = await res.json();
-  
-      if (data.secure_url) {
-        setprofilePic(data.secure_url); // Save the URL to state
-      } else {
-        alert("Upload failed");
-        console.error("Error:", data);
-      }
-    } catch (err) {
-      console.error("Cloudinary upload failed", err);
-      alert("Image upload failed. Try again.");
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setProfilePicture(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
-  
 
-  const handleNextClick = async () => {
-    if (username && gender && dateOfBirth && about && skills && profilePic) {
-      const updatedData = {
-        ...formData,
-        username,
-        gender,
-        dateOfBirth,
-        about,
-        skills,
-        profilePic,
-      };
-  
-      updateForm(updatedData); // still update context for global state
-      try {
-        console.log(formData , 7777777);
-        const data = await createCare(BASE_URL, updatedData);
-
-        if (data.success) {
-          router.push("/");
-        }
-      }  catch (err) {
-        alert("Something went wrong while submitting the form.");
-        console.error(err);
-      }
+  const handleNextClick = () => {
+    if (
+      username &&
+      gender &&
+      dob &&
+      aboutYourself &&
+      aboutSkills &&
+      profilePicture
+    ) {
+      router.push("/"); // Redirect to the home page
     } else {
       alert("Please fill all the fields and upload a profile picture.");
     }
   };
-  
 
   return (
     <>
@@ -134,29 +70,28 @@ export default function PersonalData() {
           <div className="mt-10">
             <div className="w-full flex flex-col items-center gap-2 justify-center">
               <label
-                htmlFor="profilePic"
+                htmlFor="profilePicture"
                 className="h-[140px] w-[140px] rounded-full border p-5 border-[#0000001A] flex flex-col gap-1 items-center justify-center cursor-pointer"
               >
-                {profilePic ? (
-                    <img
-                      src={profilePic}
-                      alt="Profile"
-                      className="h-full w-full rounded-full object-cover"
-                    />
-                  ) : (
-                    <>
-                      <img src="/Icons/upload.svg" alt="" />
-                      <div className="text-[8px] text-center">
-                        <span className="font-[600]">Click to upload</span> or
-                        drag and drop PNG or JPG
-                      </div>
-                    </>
-                  )}
-
+                {profilePicture ? (
+                  <img
+                    src={profilePicture}
+                    alt="Profile"
+                    className="h-full w-full rounded-full object-cover"
+                  />
+                ) : (
+                  <>
+                    <img src="/Icons/upload.svg" alt="" />
+                    <div className="text-[8px] text-center">
+                      <span className="font-[600]">Click to upload</span> or
+                      drag and drop PNG or JPG
+                    </div>
+                  </>
+                )}
               </label>
               <input
                 type="file"
-                id="profilePic"
+                id="profilePicture"
                 accept="image/png, image/jpeg"
                 className="hidden"
                 onChange={handlePictureUpload}
@@ -193,8 +128,8 @@ export default function PersonalData() {
                   <p className="text-[13px] font-[500] mb-1">Date of Birth</p>
                   <input
                     type="date"
-                    value={dateOfBirth}
-                    onChange={(e) => setdateOfBirth(e.target.value)}
+                    value={dob}
+                    onChange={(e) => setDob(e.target.value)}
                     className="w-full text-[12px] px-2 py-[6px] outline-none border border-[#0000001A] rounded-md"
                   />
                 </div>
@@ -203,8 +138,8 @@ export default function PersonalData() {
                 <div className="w-1/2">
                   <p className="text-[13px] font-[500] mb-1">About Yourself</p>
                   <textarea
-                    value={about}
-                    onChange={(e) => setabout(e.target.value)}
+                    value={aboutYourself}
+                    onChange={(e) => setAboutYourself(e.target.value)}
                     className="h-36 w-full text-[12px] px-3 py-[6px] outline-none border border-[#0000001A] rounded-md"
                   ></textarea>
                 </div>
@@ -213,8 +148,8 @@ export default function PersonalData() {
                     About Your Skills
                   </p>
                   <textarea
-                    value={skills}
-                    onChange={(e) => setskills(e.target.value)}
+                    value={aboutSkills}
+                    onChange={(e) => setAboutSkills(e.target.value)}
                     className="h-36 w-full text-[12px] px-3 py-[6px] outline-none border border-[#0000001A] rounded-md"
                   ></textarea>
                 </div>

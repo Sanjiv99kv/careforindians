@@ -2,10 +2,7 @@ import { Geist, Geist_Mono, Inter, Merriweather } from "next/font/google";
 import "./globals.css";
 import { AppProvider } from "./context/AppContext.js";
 import FindJobProvider from "./context/FindJob";
-import { CareFormProvider } from './context/CareFormContext';
-import { AuthProvider } from './context/AuthContext';
 import SidebarMobile from "./components/SidebarMobile"
-
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
@@ -36,16 +33,12 @@ export default function RootLayout({ children }) {
       <body
         className={`${inter.variable} ${geistSans.variable} ${geistMono.variable} ${merriweather.variable} antialiased`}
       >
-        <AuthProvider>
-        <CareFormProvider>
         <FindJobProvider>
           <AppProvider>
             <SidebarMobile/>
             {children}
             </AppProvider>
         </FindJobProvider>
-        </CareFormProvider>
-        </AuthProvider>
       </body>
     </html>
   );

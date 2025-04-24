@@ -1,11 +1,13 @@
 import data from "../../../public/assets/data.js";
+const { carecardData } = data;
 
-export default function ProfileCard({data}) {
+export default function ProfileCard() {
+  const data = carecardData[2];
   return (
     <div className="bg-white rounded-lg w-full flex flex-col md:flex-row gap-4">
       <div className="md:w-[40%] h-[225px]">
         <img
-          src={data?.profilePic}
+          src={data.image}
           alt=""
           className="w-full h-full object-cover rounded-xl"
         />
@@ -14,12 +16,12 @@ export default function ProfileCard({data}) {
         <div className="flex flex-col md:flex-row gap-2 justify-between items-start">
           <div className="flex flex-col gap-1">
             <h1 className="text-[17px] text-[#101828] font-[600]">
-              {data?.username}
+              {data.name}
             </h1>
             <div className="flex items-center gap-[5px]">
               <img src="/Icons/location.svg" alt="" className="h-[20px]" />
               <span className="text-[15px] font-[400]">
-                {data?.location}
+                6391 Elgin St. Celina
               </span>
             </div>
           </div>
@@ -39,28 +41,28 @@ export default function ProfileCard({data}) {
             <span className="text-[#475467] text-[13px]">(103 reviews)</span>
           </div>
         </div>
-        <div className="text-[13px] text-[#475467]">{data?.about}</div>
+        <div className="text-[13px] text-[#475467]">{data.description}</div>
         <div>
           <h1 className="text-[15px] text-[#101828] font-[600]">
             Highlights from the Shasta
           </h1>
           <div className="flex gap-[13px]">
-           
-          <button
-                     className={`text-[13px] mt-[8px] text-[#101828] px-[13px] py-[5px] rounded-md font-[500] ${
-                      data?.category === "tutoring"
+            {data.treatments.map((treatment, index) => {
+              return (
+                <button
+                  key={index}
+                  className={`text-[13px] mt-[8px] text-[#101828] px-[13px] py-[5px] rounded-md font-[500] ${
+                    treatment === "Tutoring"
                       ? "bg-[#E9ECFF]"
-                      : data?.category === "childcare"
+                      : treatment === "Child Care"
                       ? "bg-[#E7F2FF]"
-                       : data?.category === "mentalphysical"
-                      ? "bg-[#E7F2FF]"
-                       : data?.category === "mealservice"
-                      ? "bg-[#E9ECFF]]"
                       : "bg-[#EFFFDF]"
-                    }`}
-                  >
-                    {data?.category}
-                  </button>
+                  }`}
+                >
+                  {treatment}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>

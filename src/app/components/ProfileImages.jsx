@@ -1,4 +1,4 @@
-export default function ProfileImages({data}) {
+export default function ProfileImages() {
     const images = [
         "/Images/profileimage1.jpeg", 
         "/Images/profileimage2.jpeg",
@@ -18,7 +18,7 @@ export default function ProfileImages({data}) {
                     {images.slice(1).map((image, index) => (
                         <img
                             key={index}
-                            src={data.profilePic}
+                            src={image}
                             alt={`Small ${index + 1}`}
                             className="w-full rounded-lg h-[80px] md:h-[135px]"
                         />

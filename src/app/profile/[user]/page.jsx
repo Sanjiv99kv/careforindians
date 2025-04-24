@@ -1,4 +1,3 @@
-"use client";
 import Footer from "../../components/Footer";
 import Navbar from "../../components/Navbar";
 import ProfileAbout from "../../components/ProfileAbout";
@@ -6,34 +5,18 @@ import ProfileCard from "../../components/ProfileCard";
 import ProfileImages from "../../components/ProfileImages";
 import ProfileOthers from "../../components/ProfileOthers";
 import ProfileReview from "../../components/ProfileReview";
-import { listCareProfile } from "./../../services/auth";
-import { useParams } from 'next/navigation';
-import { useState  , useEffect } from "react";
 
 export default function Profile() {
-  const [cardData , setCardData] = useState([])
-  const params = useParams(); 
-const userId = params.user;
-console.log(userId , 88888)
-  const handleList = async()=>{
-    const result = await listCareProfile(userId);
-    setCardData(result)
-  }
-  console.log(cardData , 22222)
-  useEffect(()=>{
-    handleList()
-    console.log(cardData , 22222)
-  },[])
   return (
     <>
       <Navbar />
       <div className="max-w-7xl px-6 mx-auto md:px-10 lg:px-14 xl:px-20 pt-20">
         <div className="flex mt-5 justify-between flex-col md:flex-row">
           <div className="md:w-[68%]">
-            <ProfileCard data = {cardData?.data} />
-            <ProfileAbout data = {cardData?.data} />
-            {/* <ProfileImages data = {cardData.data}/> */}
-            <ProfileOthers data = {cardData?.data}/>
+            <ProfileCard />
+            <ProfileAbout />
+            <ProfileImages />
+            <ProfileOthers />
           </div>
           <div className="md:w-[25%] mt-8 md:mt-0">
             <div className="border-2 sticky top-24 border-[#dadada84] w-full rounded-2xl p-[14px]">
@@ -51,7 +34,7 @@ console.log(userId , 88888)
             </div>
           </div>
         </div>
-        <ProfileReview careId = {cardData?.data?._id}/>
+        <ProfileReview />
       </div>
       <Footer />
     </>

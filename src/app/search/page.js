@@ -1,24 +1,15 @@
 "use client";
-import { useState , useEffect } from "react";
+import { useState } from "react";
 import CareCard from "../components/CareCard";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import data from "./../../../public/assets/data.js";
 import Modal from "../components/Modal";
-import { listCare } from "../services/auth";
 const { carecardData } = data;
 
 export default function Search() {
   const [selectedData, setSelectedData] = useState(null);
-  const [cardData , setCardData] = useState([])
-  const handleList = async()=>{
-    const result = await listCare()
-    setCardData(result)
-  }
-  console.log(cardData , 11111)
-  useEffect(()=>{
-    handleList()
-  },[])
+
   const handleCardClick = (data) => {
     setSelectedData(data);
     document.body.style.overflow = "hidden";
@@ -47,17 +38,8 @@ export default function Search() {
                   id=""
                   className="custom-select outline-none border border-[#0000001A] rounded-3xl px-[13px] py-[9px] text-[13px] font-[500]"
                 >
-                  <option defaultValue="" disabled >
-                    Meal Services
-                  </option>
-                  <option defaultValue="" disabled >
-                    Tutoring
-                  </option>
-                  <option defaultValue="" disabled >
-                    Physical Mental Health
-                  </option>
-                  <option defaultValue="" disabled >
-                    Child Caring
+                  <option value="" disabled selected>
+                    Category
                   </option>
                 </select>
                 <select
@@ -65,7 +47,7 @@ export default function Search() {
                   id=""
                   className="custom-select outline-none border border-[#0000001A] rounded-3xl px-[13px] py-[9px] text-[13px] font-[500]"
                 >
-                  <option value="" disabled >
+                  <option value="" disabled selected>
                     Filter Option
                   </option>
                 </select>
@@ -74,7 +56,7 @@ export default function Search() {
                   id=""
                   className="custom-select outline-none border border-[#0000001A] rounded-3xl px-[13px] py-[9px] text-[13px] font-[500]"
                 >
-                  <option value="" disabled>
+                  <option value="" disabled selected>
                     Ratings
                   </option>
                 </select>
@@ -87,7 +69,7 @@ export default function Search() {
           </div>
 
           <div className="mt-[26px] flex flex-col gap-[19px]">
-            {cardData?.data?.map((data, index) => {
+            {carecardData.map((data, index) => {
               return (
                 <CareCard
                   key={index}

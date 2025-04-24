@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 
 export default function Modal({ data, onClose }) {
   const router = useRouter();
+
   const modalRef = useRef(null);
 
   const handleOutsideClick = (e) => {
@@ -24,8 +25,8 @@ export default function Modal({ data, onClose }) {
       >
         <div className="md:w-[50%] h-[220px]">
           <img
-            src={data.profilePic}
-            alt="Profile"
+            src={data.image}
+            alt=""
             className="w-full h-full object-cover rounded-xl"
           />
         </div>
@@ -33,12 +34,12 @@ export default function Modal({ data, onClose }) {
           <div className="flex justify-between items-start">
             <div className="flex flex-col gap-1">
               <h1 className="text-[17px] text-[#101828] font-[600]">
-                {data.username}
+                {data.name}
               </h1>
               <div className="flex items-center gap-[5px]">
                 <img src="/Icons/location.svg" alt="" className="h-[20px]" />
                 <span className="text-[15px] font-[400]">
-                  {data.location}
+                  6391 Elgin St. Celina
                 </span>
               </div>
               <div className="flex gap-2 items-center">
@@ -62,7 +63,7 @@ export default function Modal({ data, onClose }) {
             <button
               onClick={() => {
                 document.body.style.overflow = "auto";
-                router.push(`/profile/${data.user_id}`);
+                router.push(`/profile/${data.id}`);
               }}
               className="cursor-pointer bg-[#EF5744] text-[#fff] rounded-full px-5 md:px-[22px] py-[9px] text-[13px]"
             >
@@ -70,28 +71,29 @@ export default function Modal({ data, onClose }) {
             </button>
           </div>
           <div className="text-[13px] text-[#475467] mt-4 md:mt-0">
-            {data.about}
+            {data.description}
           </div>
           <div>
             <h1 className="text-[15px] text-[#101828] font-[600] mt-4 md:mt-0">
               Highlights from the Shasta
             </h1>
             <div className="flex gap-[13px]">
-            <button
+              {data.treatments.map((treatment, index) => {
+                return (
+                  <button
+                    key={index}
                     className={`text-[13px] mt-[8px] text-[#101828] px-[13px] py-[5px] rounded-md font-[500] ${
-                      data.category === "tutoring"
-                      ? "bg-[#E9ECFF]"
-                      : data.category === "childcare"
-                      ? "bg-[#E7F2FF]"
-                       : data.category === "mentalphysical"
-                      ? "bg-[#E7F2FF]"
-                       : data.category === "mealservice"
-                      ? "bg-[#E9ECFF]]"
-                      : "bg-[#EFFFDF]"
+                      treatment === "Tutoring"
+                        ? "bg-[#E9ECFF]"
+                        : treatment === "Child Care"
+                        ? "bg-[#E7F2FF]"
+                        : "bg-[#EFFFDF]"
                     }`}
                   >
-                    {data?.category}
+                    {treatment}
                   </button>
+                );
+              })}
             </div>
           </div>
         </div>
